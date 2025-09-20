@@ -1,3 +1,5 @@
+// src/components/moviecard/MovieCard.jsx
+
 import React from 'react';
 import {
   Card,
@@ -23,10 +25,11 @@ const MovieCard = ({ movie }) => {
           transform: 'scale(1.03)',
           boxShadow: 6,
         },
-        height: '100%',
+        height: '100%',             
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#f9f9f9',
+        justifyContent: 'space-between'  
       }}
     >
       <CardMedia
@@ -37,7 +40,12 @@ const MovieCard = ({ movie }) => {
         sx={{ objectFit: 'cover' }}
       />
       <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant="h6" component="div" gutterBottom noWrap>
+        <Typography
+          variant="h6"
+          component="div"
+          gutterBottom
+          noWrap
+        >
           {title}
         </Typography>
         <Typography variant="body2" color="text.secondary">

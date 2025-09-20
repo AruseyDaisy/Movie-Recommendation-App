@@ -1,5 +1,6 @@
 // src/pages/HomePage.jsx
-import React, { useEffect, useState, useContext } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Container,
@@ -12,12 +13,9 @@ import {
 
 import { fetchPopularMovies } from '../services/movieService';
 import MovieCard from '../components/moviecard/MovieCard';
-
-import { AuthContext } from '../contexts/AuthContext';
+import { Link } from 'react-router-dom';    // <-- import this
 
 const HomePage = () => {
-  const { user, logout } = useContext(AuthContext);
-
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -46,7 +44,7 @@ const HomePage = () => {
 
   return (
     <>
-      {/* Hero + User & Logout */}
+      {/* Hero Section + Search Button */}
       <Box
         sx={{
           backgroundImage:
@@ -62,28 +60,28 @@ const HomePage = () => {
         <Typography variant="h2" gutterBottom>
           Welcome to Movie Recommender
         </Typography>
-        <Typography variant="h5">
+        <Typography variant="h5" gutterBottom>
           Discover trending movies and explore your favorites
         </Typography>
 
-        {/* Show user email and logout in top‑right corner */}
-        {user && (
-          <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
-            <Typography variant="body1" sx={{ mb: 1 }}>
-              {user.email}
-            </Typography>
-            <Button variant="contained" color="secondary" onClick={logout}>
-              Logout
-            </Button>
-          </Box>
-        )}
+    
       </Box>
+      
 
       {/* Movie Grid */}
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Typography variant="h4" gutterBottom>
           Popular Movies
         </Typography>
+            <Button
+          variant="contained"
+          color="secondary"
+          component={Link}
+          to="/search"
+          sx={{ mt: 2 }}
+        >
+          Search Movies
+        </Button>
 
         {loading ? (
           <Box
@@ -109,10 +107,21 @@ const HomePage = () => {
                     />
                     <Box sx={{ mt: 1 }}>
                       <Box
-                        sx={{ backgroundColor: 'grey.300', height: 24, width: '80%', mb: 0.5, borderRadius: 1 }}
+                        sx={{
+                          backgroundColor: 'grey.300',
+                          height: 24,
+                          width: '80%',
+                          mb: 0.5,
+                          borderRadius: 1
+                        }}
                       />
                       <Box
-                        sx={{ backgroundColor: 'grey.300', height: 24, width: '60%', borderRadius: 1 }}
+                        sx={{
+                          backgroundColor: 'grey.300',
+                          height: 24,
+                          width: '60%',
+                          borderRadius: 1
+                        }}
                       />
                     </Box>
                   </Box>
@@ -128,14 +137,28 @@ const HomePage = () => {
               </Typography>
             ) : (
               <>
-                <Grid container spacing={3} sx={{ mt: 2 }}>
+                <Grid
+                  container
+                  spacing={3}
+                  sx={{ mt: 2 }}
+                  alignItems="stretch"
+                >
                   {movies.map((movie) => (
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={4}
+                      lg={3}
+                      key={movie.id}
+                      sx={{
+                        display: 'flex',
+                      }}
+                    >
                       <MovieCard movie={movie} />
                     </Grid>
                   ))}
                 </Grid>
-
                 <Box
                   sx={{
                     mt: 4,

@@ -9,6 +9,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 import NavBar from './components/navbar/NavBar';
 import Footer from './components/footer/Footer';
+import Search from './components/search/search';
+
 
 import HomePage from './pages/HomePage';
 import MovieDetails from './pages/MovieDetails';
@@ -29,6 +31,8 @@ function App() {
               {/* Public routes */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
+              <Route path="/search" element={<Search />} />
+
 
               {/* Protected routes */}
               <Route 
