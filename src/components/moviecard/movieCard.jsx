@@ -1,18 +1,9 @@
-// src/components/moviecard/MovieCard.jsx
-
 import React from 'react';
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  Rating,
-  Box,
-} from '@mui/material';
+import { Card, CardMedia, CardContent, Typography, Rating, Box } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const MovieCard = ({ movie }) => {
-  const { title, poster_path, vote_average, release_date } = movie;
-
+  const { id, title, poster_path, vote_average, release_date } = movie;
   const imageUrl = poster_path
     ? `https://image.tmdb.org/t/p/w500${poster_path}`
     : 'https://via.placeholder.com/500x750?text=No+Image';
@@ -25,27 +16,24 @@ const MovieCard = ({ movie }) => {
           transform: 'scale(1.03)',
           boxShadow: 6,
         },
-        height: '100%',             
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#f9f9f9',
-        justifyContent: 'space-between'  
+        justifyContent: 'space-between',
       }}
     >
-      <CardMedia
-        component="img"
-        height="350"
-        image={imageUrl}
-        alt={title}
-        sx={{ objectFit: 'cover' }}
-      />
+      <Link to={`/movie/${id}`}>
+        <CardMedia
+          component="img"
+          height="350"
+          image={imageUrl}
+          alt={title}
+          sx={{ objectFit: 'cover' }}
+        />
+      </Link>
       <CardContent sx={{ flexGrow: 1 }}>
-        <Typography
-          variant="h6"
-          component="div"
-          gutterBottom
-          noWrap
-        >
+        <Typography variant="h6" component="div" gutterBottom noWrap>
           {title}
         </Typography>
         <Typography variant="body2" color="text.secondary">

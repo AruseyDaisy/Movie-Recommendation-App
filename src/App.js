@@ -1,5 +1,3 @@
-// src/App.jsx
-
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CssBaseline, Container, Box } from '@mui/material';
@@ -44,7 +42,7 @@ function App() {
                 } 
               />
               <Route
-                path="/moviedetails/:id" 
+                path="/movie/:id" 
                 element={
                   <ProtectedRoute>
                     <MovieDetails />
