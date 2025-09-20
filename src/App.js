@@ -1,6 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CssBaseline, Container, Box } from '@mui/material';
+import SignupPage from './pages/SignupPage';
+import LoginPage from './pages/LoginPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 import NavBar from './components/navbar/NavBar';
 import Footer from './components/footer/Footer';

@@ -17,7 +17,7 @@ const api = axios.create({
   },
 });
 
-export const fetchPopularMovies = async (page = 1) => {
+export const fetchPopularMovies = async ({page }) => {
   const response = await api.get('/movie/popular', {
     params: {
       page,

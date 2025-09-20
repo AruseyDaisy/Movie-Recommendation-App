@@ -1,6 +1,5 @@
 
 import React, { useEffect, useState } from 'react';
-import MovieCard from '../components/moviecard/movieCard';
 import {
   Typography,
   Container,
@@ -11,9 +10,7 @@ import {
 } from '@mui/material';
 
 import {fetchPopularMovies} from '../services/movieService'
-
-// import { fetchPopularMovies } from '../services/apiService';
-// import MovieCard from '../components/MovieCard';
+import MovieCard from '../components/moviecard/MovieCard';
 
 
 const HomePage = () => {
