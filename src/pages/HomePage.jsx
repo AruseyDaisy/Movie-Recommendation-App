@@ -1,5 +1,5 @@
-
-import React, { useEffect, useState } from 'react';
+// src/pages/HomePage.jsx
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Typography,
   Container,
@@ -7,13 +7,17 @@ import {
   CircularProgress,
   Pagination,
   Box,
+  Button
 } from '@mui/material';
 
-import {fetchPopularMovies} from '../services/movieService'
+import { fetchPopularMovies } from '../services/movieService';
 import MovieCard from '../components/moviecard/MovieCard';
 
+import { AuthContext } from '../contexts/AuthContext';
 
 const HomePage = () => {
+  const { user, logout } = useContext(AuthContext);
+
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -21,6 +25,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const loadMovies = async () => {
+      setLoading(true);
       try {
         const data = await fetchPopularMovies(page);
         setMovies(data.results);
@@ -41,15 +46,17 @@ const HomePage = () => {
 
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero + User & Logout */}
       <Box
         sx={{
-          backgroundImage: 'url(https://image.tmdb.org/t/p/original/8YFL5QQVPy3AgrEQxNYVSgiPEbe.jpg)',
+          backgroundImage:
+            'url(https://image.tmdb.org/t/p/original/8YFL5QQVPy3AgrEQxNYVSgiPEbe.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           color: 'white',
-          py: 10,
+          py: 4,
           textAlign: 'center',
+          position: 'relative'
         }}
       >
         <Typography variant="h2" gutterBottom>
@@ -58,35 +65,94 @@ const HomePage = () => {
         <Typography variant="h5">
           Discover trending movies and explore your favorites
         </Typography>
+
+        {/* Show user email and logout in top‑right corner */}
+        {user && (
+          <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
+            <Typography variant="body1" sx={{ mb: 1 }}>
+              {user.email}
+            </Typography>
+            <Button variant="contained" color="secondary" onClick={logout}>
+              Logout
+            </Button>
+          </Box>
+        )}
       </Box>
 
       {/* Movie Grid */}
-      <Container maxWidth="lg" sx={{ mt: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Typography variant="h4" gutterBottom>
           Popular Movies
         </Typography>
 
         {loading ? (
-          <Grid container justifyContent="center" sx={{ mt: 4 }}>
-            <CircularProgress />
-          </Grid>
-        ) : (
-          <>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <CircularProgress sx={{ mt: 4 }} />
+
             <Grid container spacing={3} sx={{ mt: 2 }}>
-              {movies.map((movie) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
-                  <MovieCard movie={movie} />
+              {Array.from(new Array(8)).map((_, idx) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={idx}>
+                  <Box>
+                    <Box
+                      sx={{
+                        backgroundColor: 'grey.300',
+                        height: 300,
+                        width: '100%',
+                        borderRadius: 2
+                      }}
+                    />
+                    <Box sx={{ mt: 1 }}>
+                      <Box
+                        sx={{ backgroundColor: 'grey.300', height: 24, width: '80%', mb: 0.5, borderRadius: 1 }}
+                      />
+                      <Box
+                        sx={{ backgroundColor: 'grey.300', height: 24, width: '60%', borderRadius: 1 }}
+                      />
+                    </Box>
+                  </Box>
                 </Grid>
               ))}
             </Grid>
+          </Box>
+        ) : (
+          <>
+            {movies.length === 0 ? (
+              <Typography variant="h6" align="center" sx={{ mt: 4 }}>
+                No movies found.
+              </Typography>
+            ) : (
+              <>
+                <Grid container spacing={3} sx={{ mt: 2 }}>
+                  {movies.map((movie) => (
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
+                      <MovieCard movie={movie} />
+                    </Grid>
+                  ))}
+                </Grid>
 
-            <Pagination
-              count={Math.min(totalPages, 50)}
-              page={page}
-              onChange={handlePageChange}
-              color="primary"
-              sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}
-            />
+                <Box
+                  sx={{
+                    mt: 4,
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Pagination
+                    count={Math.min(totalPages, 50)}
+                    page={page}
+                    onChange={handlePageChange}
+                    color="primary"
+                    disabled={loading}
+                  />
+                </Box>
+              </>
+            )}
           </>
         )}
       </Container>

@@ -1,3 +1,4 @@
+// ProtectedRoute.jsx
 import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
@@ -6,8 +7,8 @@ import { CircularProgress, Box } from '@mui/material';
 const ProtectedRoute = ({ children }) => {
   const { user, loadingAuthState } = useContext(AuthContext);
 
+  // While Firebase is checking if there’s a user
   if (loadingAuthState) {
-    // Show a spinner while we determine auth state
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
         <CircularProgress />
@@ -16,6 +17,7 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!user) {
+    // if not logged in, redirect to login
     return <Navigate to="/login" replace />;
   }
 

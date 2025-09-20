@@ -1,38 +1,24 @@
 // src/pages/LoginPage.jsx
 import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
-import {
-  TextField,
-  Button,
-  Container,
-  Typography,
-  Box,
-  Alert
-} from '@mui/material';
+import { Container, Box, TextField, Button, Typography, Alert } from '@mui/material';
 
 const LoginPage = () => {
+  const { login, authError } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
-
-  const { login, authError } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  // If coming from a protected route, redirect back after login
-  const from = location.state?.from?.pathname || '/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     const result = await login(email, password);
     setSubmitting(false);
-
     if (result.user) {
-      navigate(from, { replace: true });
+      navigate('/');  
     }
-    // if error, authError will show
   };
 
   return (
@@ -68,11 +54,11 @@ const LoginPage = () => {
           >
             {submitting ? 'Logging in...' : 'Login'}
           </Button>
-          <Box mt={2}>
-            <Typography variant="body2">
-              Don't have an account? <Link to="/signup">Sign Up</Link>
-            </Typography>
-          </Box>
+        </Box>
+        <Box sx={{ mt: 2 }}>
+          <Typography variant="body2">
+            Don't have an account? <Button variant="text" onClick={() => navigate('/signup')}>Sign Up</Button>
+          </Typography>
         </Box>
       </Box>
     </Container>
