@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ main, dev-enviroment ]
+    branches: [ main, dev-environment ]
   pull_request:
-    branches: [ main, dev-enviroment ]
+    branches: [ main, dev-environment ]
 
 env:
   CI: true
