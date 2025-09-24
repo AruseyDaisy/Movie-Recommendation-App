@@ -5,9 +5,6 @@ import axios from 'axios';
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 const BASE_URL = process.env.REACT_APP_TMDB_BASE_URL;
 
-console.log("API KEY", API_KEY);
-console.log("BASE URL", BASE_URL);
-
 
 
 const api = axios.create({
@@ -23,7 +20,6 @@ export const fetchPopularMovies = async ({page = 1 }) => {
       page,
     },
   });
-  console.log("Fetched popular movies for page:", page);
   return response.data;
 };
 export const fetchOtherMovies = async ({page =1}) => {

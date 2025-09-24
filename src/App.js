@@ -7,7 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 import NavBar from './components/navbar/NavBar';
 import Footer from './components/footer/Footer';
-import Search from './components/search/search';
+import Search from './components/search/Search';
 
 
 import HomePage from './pages/HomePage';
