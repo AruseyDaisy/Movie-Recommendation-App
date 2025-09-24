@@ -1,0 +1,48 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, dev-enviroment ]
+  pull_request:
+    branches: [ main, dev-enviroment ]
+
+env:
+  CI: true
+
+jobs:
+  test-and-build:
+    name: Test and Build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run tests with coverage
+      run: npm test -- --coverage --watchAll=false --passWithNoTests
+    
+    - name: Build with test environment variables
+      run: |
+        export REACT_APP_API_KEY=test_key
+        export REACT_APP_AUTH_DOMAIN=test.firebaseapp.com
+        export REACT_APP_PROJECT_ID=test-project
+        export REACT_APP_STORAGE_BUCKET=test.appspot.com
+        export REACT_APP_MESSAGING_SENDER_ID=123456789
+        export REACT_APP_APP_ID=1:123456789:web:abcdef
+        npm run build
+      env:
+        CI: false 
+    
+    - name: Test artifacts
+      run: |
+        echo "Build completed successfully"
+        ls -la build/

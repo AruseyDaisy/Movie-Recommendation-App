@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '../../test-utils';
 
 // Mock react-router-dom Link and useNavigate
 jest.mock('react-router-dom', () => {
@@ -11,30 +11,13 @@ jest.mock('react-router-dom', () => {
 });
 const router = require('react-router-dom');
 
-// Use the real AuthContext provider from the codebase and pass mocked values via the provider
-import { AuthContext } from '../../contexts/AuthContext';
-
+const { defaultAuthMock } = require('../../test-utils');
 const mockLogout = jest.fn();
-const mockAuthContext = {
-  user: null,
-  loadingAuthState: false,
-  authError: null,
-  signup: jest.fn(),
-  login: jest.fn(),
-  logout: mockLogout,
-};
+const mockAuthContext = { ...defaultAuthMock, logout: mockLogout };
 
 import NavBar from './NavBar';
 
-// helper to render with AuthContext.Provider + MemoryRouter
-const renderWithProviders = (ui, { providerValue = mockAuthContext } = {}) => {
-  const { MemoryRouter } = router;
-  return render(
-    React.createElement(MemoryRouter, null,
-      React.createElement(AuthContext.Provider, { value: providerValue }, ui)
-    )
-  );
-};
+// tests will use render from test-utils which wraps with AuthContext and BrowserRouter
 
 describe('NavBar', () => {
   beforeEach(() => {
@@ -42,7 +25,7 @@ describe('NavBar', () => {
   });
 
   test('shows Login when user is not authenticated', () => {
-    renderWithProviders(React.createElement(NavBar));
+    render(React.createElement(NavBar));
     const loginButton = screen.getByRole('link', { name: /login/i });
     expect(loginButton).toBeInTheDocument();
   });
@@ -52,7 +35,7 @@ describe('NavBar', () => {
   const { AuthContext } = require('../../contexts/AuthContext');
     const value = { ...mockAuthContext, user: { email: 'test@example.com' } };
 
-    renderWithProviders(React.createElement(NavBar), { providerValue: value });
+  render(React.createElement(NavBar), { providerValue: value });
 
     expect(screen.getByText(/test@example.com/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /logout/i })).toBeInTheDocument();
@@ -66,7 +49,7 @@ describe('NavBar', () => {
     const { AuthContext } = require('../../contexts/AuthContext');
     const value = { ...mockAuthContext, user: { email: 'me@me.com' } };
 
-    renderWithProviders(React.createElement(NavBar), { providerValue: value });
+  render(React.createElement(NavBar), { providerValue: value });
 
     const logoutButton = screen.getByRole('button', { name: /logout/i });
     fireEvent.click(logoutButton);

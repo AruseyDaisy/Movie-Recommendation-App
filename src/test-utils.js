@@ -1,30 +1,33 @@
 import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { BrowserRouter } from 'react-router-dom';
-import movieReducer from './features/movies/movieSlice';
+import { MemoryRouter } from 'react-router-dom';
+import { AuthContext } from './contexts/AuthContext';
+
+// default mock auth context value used by tests
+export const defaultAuthMock = {
+  user: null,
+  loadingAuthState: false,
+  authError: null,
+  signup: jest.fn(),
+  login: jest.fn(),
+  logout: jest.fn(),
+};
 
 const customRender = (
   ui,
   {
-    preloadedState = {},
-    store = configureStore({ 
-      reducer: { movies: movieReducer }, 
-      preloadedState 
-    }),
+    providerValue = defaultAuthMock,
+    route = '/',
     ...renderOptions
   } = {}
 ) => {
   const theme = createTheme();
   const Wrapper = ({ children }) => (
-    <BrowserRouter>
+    <MemoryRouter initialEntries={[route]}>
       <ThemeProvider theme={theme}>
-        <Provider store={store}>
-          {children}
-        </Provider>
+        <AuthContext.Provider value={providerValue}>{children}</AuthContext.Provider>
       </ThemeProvider>
-    </BrowserRouter>
+    </MemoryRouter>
   );
 
   return render(ui, { wrapper: Wrapper, ...renderOptions });
