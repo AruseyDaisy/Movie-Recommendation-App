@@ -1,6 +1,6 @@
 // src/components/Footer/Footer.test.js
 import { render, screen } from '@testing-library/react';
-import Footer from './Footer';
+import Footer from './Footer.jsx';
 
 describe('Footer Component', () => {
   test('renders footer with correct content', () => {
