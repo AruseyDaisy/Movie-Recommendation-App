@@ -24,17 +24,6 @@ jobs:
           node-version: "18.x"
           cache: "npm"
 
-      - name: Debug file structure
-        run: |
-          echo "=== Full project structure ==="
-          find src -name "*.js" -o -name "*.jsx" -o -name "*.test.js" | grep -i footer
-          echo "=== Footer directory detailed ==="
-          ls -la src/components/footer/
-          echo "=== Footer.jsx content verification ==="
-          cat src/components/footer/Footer.jsx | tail -3
-          echo "=== Footer.test.js import line ==="
-          grep "import Footer" src/components/footer/Footer.test.js
-
       - name: Install dependencies
         run: npm ci
 
