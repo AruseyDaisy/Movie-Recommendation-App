@@ -35,6 +35,11 @@ jobs:
         env:
           CI: false
 
+      
+      - name: Copy web.config from public to build folder
+        run: cp public/web.config build/
+
+
       - name: Verify build artifacts
         run: |
           echo "Build completed successfully"
