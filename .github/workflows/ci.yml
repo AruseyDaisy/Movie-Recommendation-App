@@ -29,6 +29,18 @@ jobs:
 
       - name: Run tests with coverage
         run: npm test -- --coverage --watchAll=false --passWithNoTests
+        
+      - name: Export environment variables
+        run: |
+          echo "REACT_APP_FIREBASE_API_KEY=${{ secrets.REACT_APP_FIREBASE_API_KEY }}" | Out-File -Append -FilePath $env:GITHUB_ENV
+          echo "REACT_APP_FIREBASE_AUTH_DOMAIN=${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }}" | Out-File -Append -FilePath $env:GITHUB_ENV
+          echo "REACT_APP_FIREBASE_PROJECT_ID=${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}" | Out-File -Append -FilePath $env:GITHUB_ENV
+          echo "REACT_APP_FIREBASE_STORAGE_BUCKET=${{ secrets.REACT_APP_FIREBASE_STORAGE_BUCKET }}" | Out-File -Append -FilePath $env:GITHUB_ENV
+          echo "REACT_APP_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }}" | Out-File -Append -FilePath $env:GITHUB_ENV
+          echo "REACT_APP_FIREBASE_APP_ID=${{ secrets.REACT_APP_FIREBASE_APP_ID }}" | Out-File -Append -FilePath $env:GITHUB_ENV
+          echo "REACT_APP_TMDB_API_KEY=${{ secrets.REACT_APP_TMDB_API_KEY }}" | Out-File -Append -FilePath $env:GITHUB_ENV
+          echo "REACT_APP_TMDB_BASE_URL=${{ secrets.REACT_APP_TMDB_BASE_URL }}" | Out-File -Append -FilePath $env:GITHUB_ENV
+
 
       - name: Build project
         run: npm run build
